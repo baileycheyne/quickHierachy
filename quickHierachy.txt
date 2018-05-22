@@ -1,0 +1,36 @@
+import maya.cmds as mc
+
+if mc.window("grpCreate", exists = True):
+    mc.deleteUI("grpCreate")
+
+myWindow = mc.window("grpCreate", t = "Hierachy Groups")
+mc.columnLayout(adj = True)
+side = mc.optionMenuGrp(label = 'Side')
+mc.menuItem(label = "Center")
+mc.menuItem(label = "Left")
+mc.menuItem(label = "Right")
+place = mc.optionMenuGrp(label = 'Place')
+mc.menuItem(label = "")
+mc.menuItem(label = "Front")
+mc.menuItem(label = "Back")
+part = mc.optionMenuGrp(label = 'Skel Part')
+mc.menuItem(label = "Spine")
+mc.menuItem(label = "Head")
+mc.menuItem(label = "Neck")
+mc.menuItem(label = "Arm")
+mc.menuItem(label = "Leg")
+mc.menuItem(label = "Tail")
+mc.menuItem(label = "Wing")
+mc.button(label = "Execute", command = "createHierachy()")
+mc.showWindow(myWindow)
+
+
+def createHierachy():
+    sideDef = mc.optionMenuGrp(side, query = True, value = True)
+    placeDef = mc.optionMenuGrp(place, query = True, value = True)
+    partDef = mc.optionMenuGrp(part, query = True, value = True)
+
+    one = mc.group(em = True, name = sideDef[0] + "_" + placeDef.lower() + partDef.lower()+ "_GRP")
+    mc.group(em = True, name = sideDef[0] + "_" + placeDef.lower() + partDef.lower()+ "Skel_GRP", p = one)
+    mc.group(em = True, name = sideDef[0] + "_" + placeDef.lower() + partDef.lower()+ "Ctrl_GRP", p = one)
+    mc.group(em = True, name = sideDef[0] + "_" + placeDef.lower() + partDef.lower()+ "Parts_GRP", p = one)
